@@ -11,7 +11,7 @@ For ESP32 UWB Pro with Display
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define ANCHOR_ADD "86:17:5B:D5:A9:9A:E2:9C"
+#define ANCHOR_ADD "82:17:5B:D5:A9:9A:E2:9C"
 
 #define SPI_SCK 18
 #define SPI_MISO 19
