@@ -87,11 +87,11 @@ void stop () {
 
 void loop () {
   read_serial(); 
-  if (v.x < 0.5) {
-     return turn_left();
+  if (v.x < -0.5) {
+     return turn_right();
   } 
   if (v.x > 1.0) {
-     return turn_right();
+     return turn_left();
   } 
   if (v.y >= 2.0){
     return forward(); 
