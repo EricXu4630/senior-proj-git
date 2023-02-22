@@ -108,10 +108,10 @@ void loop () {
   // if (v.y > 1.0){
   //   return forward();
   // }
-  if (output1 > output2){
+  if (v.x < -0.1){
      return turn_right();
   } 
-  if (output1 < output2){
+  if (v.x > 0.6){
      return turn_left();
   } 
   stop();
