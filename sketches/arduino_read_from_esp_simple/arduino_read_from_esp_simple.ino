@@ -27,7 +27,7 @@ void setup() {
 }
 
 void update_pos(){
-  // c is distance between anchors. 
+  // c is distance between anchors. b is output2, a is output1
   const float c = 0.52;
   float cos_a = (output2 * output2 + c*c - output1 * output1) / (2 * output2 * c);
   Vec v; 
@@ -44,19 +44,20 @@ void read_serial() {
   if(Serial2.available()){
       input_stack2[counter2++] = Serial2.read(); 
   }
-  if (counter1 == 4 && input_stack1 > 0.0 && input_stack1 < 20.0){
+  if (counter1 == 4){
       memcpy(&output1, input_stack1, sizeof(float));
       // Serial.print("Output1: ");
       // Serial.println(output1);
       counter1 = 0;
-      update_pos(); 
   }
-  if (counter2 == 4 && input_stack2 > 0.0 && input_stack2 < 20.0){
+  if (counter2 == 4){
       memcpy(&output2, input_stack2, sizeof(float));
       // Serial.print("Output2: ");
       // Serial.println(output2);
-      counter2 = 0;
-      update_pos(); 
+      counter2 = 0;     
+  }
+  if (output1 > 0.0 && output1 < 10.0 && output2 > 0.0 && output2 < 10.0){
+    update_pos()
   }
 }
 
