@@ -39,11 +39,10 @@ void update_pos(){
   Serial.print(", "); 
   Serial.print(v.y); 
   Serial.println(); 
-  return v; 
+  // return v; 
 }
 
 void read_serial() {
-  // put your main code here, to run repeatedly:
   if(Serial3.available()){
     input_stack1[counter1++] = Serial3.read(); 
   }
@@ -88,29 +87,28 @@ void forward() {
 
 void stop () {
   // Serial.println("stopping"); 
-  roboclaw.ForwardM1(address, 0); 
-  roboclaw.ForwardM2(address, 0); 
+  roboclaw.ForwardMixed(address, 0); 
 }
 
 
 void loop () {
-  read_serial(); 
+  read_serial();
+  delay(500); 
   if (!isnan(v.x) && !isnan(v.y)){
-    if (v.y > 1.0 && v.y < 10.0){
+    if (v.y > 1.5 && v.y < 10.0){
       if (v.x > 0.52 && v.x < 5.0){
         return turn_right();
       }
       else if (v.x < 0 && v.x > -4.5){
         return turn_left();
       }
-      else if (v.x >= 0.0 && v.x <= 0.5){
+      else if (v.x >= 0.0 && v.x <= 0.52){
         return go_forward();
       }    
     }
-    else if (v.y <=1.0){
+    else if (v.y <=1.5){
       return stop;
     }
   }
-
   delay(500);
 }
