@@ -4,7 +4,7 @@
 
 
 SoftwareSerial serial(10,11); 
-RoboClaw roboclaw(&serial, 10000); 
+// RoboClaw roboclaw(&serial, 10000); 
 
 SerialTransfer anchor1_transfer;
 SerialTransfer anchor2_transfer;
@@ -30,12 +30,13 @@ unsigned long endtime;
 
 void setup() {
   // put your setup code here, to run once:
+  serial.begin(38400); 
   Serial.begin(115200); 
   Serial3.begin(115200);
   anchor1_transfer.begin(Serial3); 
   Serial2.begin(115200);
   anchor2_transfer.begin(Serial2); 
-  roboclaw.begin(38400); 
+  // roboclaw.begin(38400); 
 }
 
 void update_pos(){
@@ -60,6 +61,8 @@ void read_serial() {
   else if(anchor2_transfer.status < 0){
     Serial.print("ERROR: ");
     Serial.println(anchor2_transfer.status);
+    anchor2_transfer.available();
+
   }
 
   if(anchor1_transfer.available()){
@@ -71,12 +74,12 @@ void read_serial() {
   else if(anchor1_transfer.status < 0){
     Serial.print("ERROR: ");
     Serial.println(anchor1_transfer.status);
+    anchor1_transfer.available();
   }
 }
 
 void turn_left() {
-  analogWrite(1, 100); 
-    analogWrite(2, 100); 
+  serial.write(72);
 
   // Serial.println("left"); 
   // roboclaw.ForwardM1(address, 20); 
@@ -84,17 +87,14 @@ void turn_left() {
 }
 
 void turn_right() {
-    analogWrite(1, 100); 
-      analogWrite(2, 100); 
-
-
+    serial.write(200);
   // Serial.println("right"); 
   // roboclaw.ForwardM2(address, 20); 
   // roboclaw.TurnRightMixed(address, 20); 
 }
 
 void forward() {
-    analogWrite(1, 100); 
+    serial.write(72) && serial.write(200);
 
   // Serial.println("forward"); 
   // roboclaw.ForwardM1(address, 20);
@@ -104,9 +104,7 @@ void forward() {
 
 
 void stop () {
-    analogWrite(1, 100); 
-
-  analogWrite(2, 100); 
+  // serial.write(64) && serial.write(192);
 
   // Serial.println("stopping"); 
   // roboclaw.ForwardM1(address, 0);

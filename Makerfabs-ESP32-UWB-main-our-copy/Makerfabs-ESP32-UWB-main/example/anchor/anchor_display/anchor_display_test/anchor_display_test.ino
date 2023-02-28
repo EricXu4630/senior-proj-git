@@ -11,7 +11,7 @@ For ESP32 UWB Pro with Display
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define ANCHOR_ADD "81:17:5B:D5:A9:9A:E2:9C"
+#define ANCHOR_ADD "81:00:5B:D5:A9:9A:E2:9C"
 
 uint16_t Adelay = 16681;
 
@@ -37,7 +37,7 @@ void setup()
     // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
     { // Address 0x3C for 128x32
-        Serial.println(F("SSD1306 allocation failed"));
+        // Serial.println(F("SSD1306 allocation failed"));
         for (;;)
             ; // Don't proceed, loop forever
     }
@@ -63,27 +63,29 @@ void loop()
 
 void newRange()
 {
-    Serial.print("from: ");
-    Serial.print(DW1000Ranging.getDistantDevice()->getShortAddress(), HEX);
-    Serial.print("\t Range: ");
-    Serial.print(DW1000Ranging.getDistantDevice()->getRange());
-    Serial.print(" m");
-    Serial.print("\t RX power: ");
-    Serial.print(DW1000Ranging.getDistantDevice()->getRXPower());
-    Serial.println(" dBm");
+    // Serial.print("from: ");
+    // Serial.print(DW1000Ranging.getDistantDevice()->getShortAddress(), HEX);
+    // Serial.print("\t Range: ");
+    float range = DW1000Ranging.getDistantDevice()->getRange();
+    Serial.write(range,4);
+    Serial.flush(); 
+    // Serial.print(" m");
+    // Serial.print("\t RX power: ");
+    // Serial.print(DW1000Ranging.getDistantDevice()->getRXPower());
+    // Serial.println(" dBm");
 }
 
 void newBlink(DW1000Device *device)
 {
-    Serial.print("blink; 1 device added ! -> ");
-    Serial.print(" short:");
-    Serial.println(device->getShortAddress(), HEX);
+    // Serial.print("blink; 1 device added ! -> ");
+    // Serial.print(" short:");
+    // Serial.println(device->getShortAddress(), HEX);
 }
 
 void inactiveDevice(DW1000Device *device)
 {
-    Serial.print("delete inactive device: ");
-    Serial.println(device->getShortAddress(), HEX);
+    // Serial.print("delete inactive device: ");
+    // Serial.println(device->getShortAddress(), HEX);
 }
 
 void logoshow(void)
