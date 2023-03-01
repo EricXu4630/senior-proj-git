@@ -44,7 +44,6 @@ void update_pos(){
 }
 
 void read_serial() {
-
   if(anchor2_transfer.available()){
     uint16_t recSize = 0;
     // Serial.println("New Data 2");
@@ -70,31 +69,27 @@ void read_serial() {
 
 void turn_left() {
   // Serial.println("left"); 
-  roboclaw.ForwardM1(address, 20); 
-  // roboclaw.TurnLeftMixed(address, 20); 
+  // roboclaw.ForwardM1(address, 20); 
+  roboclaw.TurnLeftMixed(address, 20); 
 }
 
 void turn_right() {
   Serial.println("right"); 
-  roboclaw.ForwardM2(address, 20); 
-  // roboclaw.TurnRightMixed(address, 20); 
+  // roboclaw.ForwardM2(address, 20); 
+  roboclaw.TurnRightMixed(address, 20); 
 }
 
 void forward() {
   // Serial.println("forward"); 
-  roboclaw.ForwardM1(address, 20);
-  roboclaw.ForwardM2(address, 20); 
-  // roboclaw.ForwardMixed(address, 30); 
+  // roboclaw.ForwardM1(address, 20) && roboclaw.ForwardM2(address, 20); 
+  roboclaw.ForwardMixed(address, 30); 
 }
-
 
 void stop () {
   // Serial.println("stopping"); 
-  roboclaw.ForwardM1(address, 0);
-  roboclaw.ForwardM2(address, 0); 
-  // roboclaw.ForwardMixed(address, 0); 
+  // roboclaw.ForwardM1(address, 0) && roboclaw.ForwardM2(address, 0); 
+  roboclaw.ForwardMixed(address, 0); 
 }
-
 
 void loop () {
   read_serial();
@@ -120,8 +115,12 @@ void loop () {
   //   }
   // }
 
-  delay(500);
-
+  // starttime = millis();
+  // endtime = starttime;
+  // while ((endtime - starttime) <=1000) // do this loop for up to 1000ms
+  // {
+    
+  delay(300);
   if (output1 > 0.45){ 
       if (output1 - output2 > 0.25){
         delay(100);
