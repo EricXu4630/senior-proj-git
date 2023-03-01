@@ -51,7 +51,7 @@ void read_serial() {
     // Serial.println(output2);
   }
   else if(anchor2_transfer.status < 0){
-    Serial.print("ERROR: ");
+    Serial.print("ERROR anch2: ");
     Serial.println(anchor2_transfer.status);
   }
 
@@ -62,7 +62,7 @@ void read_serial() {
     // Serial.println(output1);
   }
   else if(anchor1_transfer.status < 0){
-    Serial.print("ERROR: ");
+    Serial.print("ERROR anch1: ");
     Serial.println(anchor1_transfer.status);
   }
 }
@@ -119,29 +119,26 @@ void loop () {
   // endtime = starttime;
   // while ((endtime - starttime) <=1000) // do this loop for up to 1000ms
   // {
-    
-  delay(300);
-  if (output1 > 0.45){ 
-      if (output1 - output2 > 0.25){
+
+  delay(random(200, 400));
+  if (output1 > 0.45 && output2 > 0.45){ 
+      if (output1-output2 > 0.25){
         delay(100);
         turn_right();
-        delay(100);
       }
-      else if (output2 - output1 > 0.25){
+      else if (output2-output1 > 0.25){
         delay(100);
         turn_left();
-        delay(100);
       }
       else{
         delay(100);
         forward();
-        delay(100);
       }    
     }
   else{
     stop();
   }
-  delay(200);
+  delay(random(200, 400));
 
   //   // endtime = millis();
   // // }
