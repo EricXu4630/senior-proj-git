@@ -9,15 +9,9 @@ RoboClaw roboclaw(&serial, 10000);
 SerialTransfer anchor1_transfer;
 SerialTransfer anchor2_transfer;
 
-
-
 #define address 0x80
 
-// int counter1 = 0;
-// char input_stack1[4];
 float output1; 
-// int counter2 = 0;
-// char input_stack2[4];
 float output2; 
 
 struct Vec {
@@ -75,42 +69,29 @@ void read_serial() {
 }
 
 void turn_left() {
-  analogWrite(1, 100); 
-    analogWrite(2, 100); 
-
   // Serial.println("left"); 
-  // roboclaw.ForwardM1(address, 20); 
+  roboclaw.ForwardM1(address, 20); 
   // roboclaw.TurnLeftMixed(address, 20); 
 }
 
 void turn_right() {
-    analogWrite(1, 100); 
-      analogWrite(2, 100); 
-
-
   // Serial.println("right"); 
-  // roboclaw.ForwardM2(address, 20); 
+  roboclaw.ForwardM2(address, 20); 
   // roboclaw.TurnRightMixed(address, 20); 
 }
 
 void forward() {
-    analogWrite(1, 100); 
-
   // Serial.println("forward"); 
-  // roboclaw.ForwardM1(address, 20);
-  // roboclaw.ForwardM2(address, 20); 
+  roboclaw.ForwardM1(address, 20);
+  roboclaw.ForwardM2(address, 20); 
   // roboclaw.ForwardMixed(address, 30); 
 }
 
 
 void stop () {
-    analogWrite(1, 100); 
-
-  analogWrite(2, 100); 
-
   // Serial.println("stopping"); 
-  // roboclaw.ForwardM1(address, 0);
-  // roboclaw.ForwardM2(address, 0); 
+  roboclaw.ForwardM1(address, 0);
+  roboclaw.ForwardM2(address, 0); 
   // roboclaw.ForwardMixed(address, 0); 
 }
 
@@ -144,17 +125,17 @@ void loop () {
   if (output1 > 0.5){
     return forward(); 
       if (output1 - output2 > 0.4){
-        return turn_right();
+        turn_right();
       }
       else if (output2 - output1 > 0.4){
-        return turn_left();
+        turn_left();
       }
       else{
-        return forward();
+        forward();
       }    
     }
   else{
-    return stop();
+    stop();
   }
 
 
