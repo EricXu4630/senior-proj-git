@@ -72,12 +72,8 @@ void newRange() {
   bufSize = myTransfer.txObj(range, bufSize); 
   myTransfer.sendData(bufSize);
   delay(500); 
-  //MARKER
-  // char a[4] = { 0, 0, 0, 0 };
-  // memcpy(a, &range, sizeof(float));
-
-  // Serial.write(a, 4);
-  // Serial.flush();
+  
+  
   // Serial.print(" m");
   // Serial.print("\t RX power: ");
   // Serial.print(DW1000Ranging.getDistantDevice()->getRXPower());

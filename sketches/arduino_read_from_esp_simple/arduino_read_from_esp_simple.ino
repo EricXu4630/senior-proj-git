@@ -47,9 +47,9 @@ void read_serial() {
 
   if(anchor2_transfer.available()){
     uint16_t recSize = 0;
-    Serial.println("New Data 2");
+    // Serial.println("New Data 2");
     recSize = anchor2_transfer.rxObj(output2, recSize);
-    Serial.println(output2);
+    // Serial.println(output2);
   }
   else if(anchor2_transfer.status < 0){
     Serial.print("ERROR: ");
@@ -58,9 +58,9 @@ void read_serial() {
 
   if(anchor1_transfer.available()){
     uint16_t recSize = 0;
-    Serial.println("New Data 1");
+    // Serial.println("New Data 1");
     recSize = anchor1_transfer.rxObj(output1, recSize);
-    Serial.println(output1);
+    // Serial.println(output1);
   }
   else if(anchor1_transfer.status < 0){
     Serial.print("ERROR: ");
@@ -75,7 +75,7 @@ void turn_left() {
 }
 
 void turn_right() {
-  // Serial.println("right"); 
+  Serial.println("right"); 
   roboclaw.ForwardM2(address, 20); 
   // roboclaw.TurnRightMixed(address, 20); 
 }
@@ -98,7 +98,6 @@ void stop () {
 
 void loop () {
   read_serial();
-  // delay(500); 
 
   // starttime = millis();
   // endtime = starttime;
@@ -121,23 +120,29 @@ void loop () {
   //   }
   // }
 
+  delay(500);
 
-  if (output1 > 0.5){
-    return forward(); 
-      if (output1 - output2 > 0.4){
+  if (output1 > 0.45){ 
+      if (output1 - output2 > 0.25){
+        delay(100);
         turn_right();
+        delay(100);
       }
-      else if (output2 - output1 > 0.4){
+      else if (output2 - output1 > 0.25){
+        delay(100);
         turn_left();
+        delay(100);
       }
       else{
+        delay(100);
         forward();
+        delay(100);
       }    
     }
   else{
     stop();
   }
-
+  delay(200);
 
   //   // endtime = millis();
   // // }
