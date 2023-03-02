@@ -69,25 +69,27 @@ void read_serial() {
 
 void turn_left() {
   // Serial.println("left"); 
-  roboclaw.ForwardM1(address, 20); 
+  roboclaw.ForwardM1(address, 30); 
   // roboclaw.TurnLeftMixed(address, 20); 
 }
 
 void turn_right() {
   // Serial.println("right"); 
-  roboclaw.ForwardM2(address, 20); 
+  roboclaw.ForwardM2(address, 30); 
   // roboclaw.TurnRightMixed(address, 20); 
 }
 
-void forward() {
+void forward(float speed) {
   // Serial.println("forward"); 
-  roboclaw.ForwardM1(address, 20) && roboclaw.ForwardM2(address, 20); 
+  roboclaw.ForwardM1(address, speed);
+  roboclaw.ForwardM2(address, speed); 
   // roboclaw.ForwardMixed(address, 30); 
 }
 
 void stop () {
   // Serial.println("stopping"); 
-  roboclaw.ForwardM1(address, 0) && roboclaw.ForwardM2(address, 0); 
+  roboclaw.ForwardM1(address, 0);
+  roboclaw.ForwardM2(address, 0); 
   // roboclaw.ForwardMixed(address, 0); 
 }
 
@@ -120,24 +122,29 @@ void loop () {
   // while ((endtime - starttime) <=1000) // do this loop for up to 1000ms
   // {
 
-  delay(random(200, 400));
-  if (output1 > 0.45 && output2 > 0.45){ 
-      if (output1-output2 > 0.07){
-        delay(50);
+  delay(random(50, 100));
+  float avg = (output1+output2)/2;
+
+  if (avg>=0 && avg<5.0 && !isnan(output1) && !isnan(output2)){
+    if (avg > 0.45 && avg < 3.5){ 
+      if (output1-output2 > 0.05){ 
+        delay(10);
         turn_right();
       }
-      else if (output2-output1 > 0.07){
-        delay(500);
+      else if (output2-output1 > 0.05){
+        delay(10);
         turn_left();
       }
       else{
-        delay(500);
-        forward();
+        delay(10);
+        forward(13+(avg*15));
       }    
     }
-  else{
-    stop();
+    else{
+      stop();
+    }
   }
+ 
   // delay(random(200, 400));
 
   //   // endtime = millis();
