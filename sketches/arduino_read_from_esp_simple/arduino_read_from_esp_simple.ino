@@ -46,9 +46,9 @@ void update_pos(){
 void read_serial() {
   if(anchor2_transfer.available()){
     uint16_t recSize = 0;
-    // Serial.println("New Data 2");
+    Serial.println("New Data 2");
     recSize = anchor2_transfer.rxObj(output2, recSize);
-    // Serial.println(output2);
+    Serial.println(output2);
   }
   else if(anchor2_transfer.status < 0){
     Serial.print("ERROR anch2: ");
@@ -57,9 +57,9 @@ void read_serial() {
 
   if(anchor1_transfer.available()){
     uint16_t recSize = 0;
-    // Serial.println("New Data 1");
+    Serial.println("New Data 1");
     recSize = anchor1_transfer.rxObj(output1, recSize);
-    // Serial.println(output1);
+    Serial.println(output1);
   }
   else if(anchor1_transfer.status < 0){
     Serial.print("ERROR anch1: ");
@@ -69,26 +69,26 @@ void read_serial() {
 
 void turn_left() {
   // Serial.println("left"); 
-  // roboclaw.ForwardM1(address, 20); 
-  roboclaw.TurnLeftMixed(address, 20); 
+  roboclaw.ForwardM1(address, 20); 
+  // roboclaw.TurnLeftMixed(address, 20); 
 }
 
 void turn_right() {
-  Serial.println("right"); 
-  // roboclaw.ForwardM2(address, 20); 
-  roboclaw.TurnRightMixed(address, 20); 
+  // Serial.println("right"); 
+  roboclaw.ForwardM2(address, 20); 
+  // roboclaw.TurnRightMixed(address, 20); 
 }
 
 void forward() {
   // Serial.println("forward"); 
-  // roboclaw.ForwardM1(address, 20) && roboclaw.ForwardM2(address, 20); 
-  roboclaw.ForwardMixed(address, 30); 
+  roboclaw.ForwardM1(address, 20) && roboclaw.ForwardM2(address, 20); 
+  // roboclaw.ForwardMixed(address, 30); 
 }
 
 void stop () {
   // Serial.println("stopping"); 
-  // roboclaw.ForwardM1(address, 0) && roboclaw.ForwardM2(address, 0); 
-  roboclaw.ForwardMixed(address, 0); 
+  roboclaw.ForwardM1(address, 0) && roboclaw.ForwardM2(address, 0); 
+  // roboclaw.ForwardMixed(address, 0); 
 }
 
 void loop () {
@@ -122,23 +122,23 @@ void loop () {
 
   delay(random(200, 400));
   if (output1 > 0.45 && output2 > 0.45){ 
-      if (output1-output2 > 0.25){
-        delay(100);
+      if (output1-output2 > 0.07){
+        delay(50);
         turn_right();
       }
-      else if (output2-output1 > 0.25){
-        delay(100);
+      else if (output2-output1 > 0.07){
+        delay(500);
         turn_left();
       }
       else{
-        delay(100);
+        delay(500);
         forward();
       }    
     }
   else{
     stop();
   }
-  delay(random(200, 400));
+  // delay(random(200, 400));
 
   //   // endtime = millis();
   // // }

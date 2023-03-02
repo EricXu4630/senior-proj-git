@@ -71,7 +71,7 @@ void newRange() {
   uint16_t bufSize = 0; 
   bufSize = myTransfer.txObj(range, bufSize); 
   myTransfer.sendData(bufSize);
-  delay(500); 
+  // delay(500); 
   
   
   // Serial.print(" m");
