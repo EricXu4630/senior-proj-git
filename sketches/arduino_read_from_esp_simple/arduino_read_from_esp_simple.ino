@@ -69,33 +69,34 @@ void read_serial() {
 
 void turn_left() {
   // Serial.println("left"); 
-  // roboclaw.ForwardM1(address, 40); 
-  roboclaw.TurnLeftMixed(address, 40); 
+  roboclaw.ForwardM1(address, 30); 
+  roboclaw.ForwardM2(address, 0); 
+  // roboclaw.TurnLeftMixed(address, 40); 
 }
 
 void turn_right() {
   // Serial.println("right"); 
-  // roboclaw.ForwardM2(address, 40); 
-  roboclaw.TurnRightMixed(address, 40); 
+  roboclaw.ForwardM1(address, 0);
+  roboclaw.ForwardM2(address, 30); 
+  // roboclaw.TurnRightMixed(address, 40); 
 }
 
 void forward(float speed) {
   // Serial.println("forward"); 
-  // roboclaw.ForwardM1(address, speed);
-  // roboclaw.ForwardM2(address, speed); 
+  roboclaw.ForwardM1(address, speed);
+  roboclaw.ForwardM2(address, speed); 
   // roboclaw.ForwardMixed(address, speed); 
 }
 
-void stop () {
+void stop() {
   // Serial.println("stopping"); 
-  // roboclaw.ForwardM1(address, 0);
-  // roboclaw.ForwardM2(address, 0); 
-  roboclaw.ForwardMixed(address, 0); 
+  roboclaw.ForwardM1(address, 0);
+  roboclaw.ForwardM2(address, 0); 
+  // roboclaw.ForwardMixed(address, 0); 
 }
 
 void loop () {
   read_serial();
-
   // starttime = millis();
   // endtime = starttime;
   // while ((endtime - starttime) <=1000) // do this loop for up to 1000ms
@@ -121,30 +122,35 @@ void loop () {
   delay(random(50, 100));
   float avg = (output1+output2)/2;
 
-  starttime = millis();
-  endtime = starttime;
-  while ((endtime - starttime) <= 1000) // do this loop for up to 700ms
-  {
-    if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
-      if (avg > 0.5){ 
-        if (output1-output2 > 0.05){ 
-          delay(10);
-          turn_right();
-        }
-        else if (output2-output1 > 0.05){
-          delay(10);
-          turn_left();
-        }
-        else{
-          delay(10);
-          forward(15+(avg*15));
-        }    
+  // starttime = millis();
+  // endtime = starttime;
+  // while ((endtime - starttime) <= 1000) // do this loop for up to 700ms
+  // {
+
+  if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
+    if (avg > 0.5){ 
+      if (output1-output2 > 0.3){ 
+        delay(10);
+        turn_right();
+      }
+      else if (output2-output1 > 0.3){
+        delay(10);
+        turn_left();
       }
       else{
-        stop();
-      }
+        delay(10);
+        forward(15+(avg*15));
+      }    
     }
-    endtime = millis();
+    else{
+      stop();
+    }
   }
 
+
+  //   endtime = millis();
+  // }
+
 }
+
+
