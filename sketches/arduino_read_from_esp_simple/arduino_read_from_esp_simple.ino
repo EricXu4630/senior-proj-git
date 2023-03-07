@@ -2,7 +2,6 @@
 #include <SoftwareSerial.h>
 #include "SerialTransfer.h"
 
-
 SoftwareSerial serial(10,11); 
 RoboClaw roboclaw(&serial, 10000); 
 
@@ -13,6 +12,17 @@ SerialTransfer anchor2_transfer;
 
 float output1; 
 float output2; 
+
+int readIndex = 0;
+const int windowLength = 5;
+bool windowFull = false;
+
+float total1 = 0;
+float window1[windowLength];
+float total2 = 0;
+float window2[windowLength];
+float average1 = 0;
+float average2 = 0;
 
 struct Vec {
   float x; 
@@ -30,6 +40,14 @@ void setup() {
   Serial2.begin(115200);
   anchor2_transfer.begin(Serial2); 
   roboclaw.begin(38400); 
+}
+
+float windowAverage(float window[], int windowLength){
+  float sum = 0;
+  for(int i=0; i<windowLength; i++){
+    sum += window[i];
+  }
+  return sum/windowLength;
 }
 
 void update_pos(){
@@ -69,34 +87,33 @@ void read_serial() {
 
 void turn_left() {
   // Serial.println("left"); 
-  roboclaw.ForwardM1(address, 30); 
-  roboclaw.ForwardM2(address, 0); 
-  // roboclaw.TurnLeftMixed(address, 40); 
+  // roboclaw.ForwardM1(address, 40); 
+  roboclaw.TurnLeftMixed(address, 40); 
 }
 
 void turn_right() {
   // Serial.println("right"); 
-  roboclaw.ForwardM1(address, 0);
-  roboclaw.ForwardM2(address, 30); 
-  // roboclaw.TurnRightMixed(address, 40); 
+  // roboclaw.ForwardM2(address, 40); 
+  roboclaw.TurnRightMixed(address, 40); 
 }
 
 void forward(float speed) {
   // Serial.println("forward"); 
-  roboclaw.ForwardM1(address, speed);
-  roboclaw.ForwardM2(address, speed); 
+  // roboclaw.ForwardM1(address, speed);
+  // roboclaw.ForwardM2(address, speed); 
   // roboclaw.ForwardMixed(address, speed); 
 }
 
-void stop() {
+void stop () {
   // Serial.println("stopping"); 
-  roboclaw.ForwardM1(address, 0);
-  roboclaw.ForwardM2(address, 0); 
-  // roboclaw.ForwardMixed(address, 0); 
+  // roboclaw.ForwardM1(address, 0);
+  // roboclaw.ForwardM2(address, 0); 
+  roboclaw.ForwardMixed(address, 0); 
 }
 
 void loop () {
   read_serial();
+
   // starttime = millis();
   // endtime = starttime;
   // while ((endtime - starttime) <=1000) // do this loop for up to 1000ms
@@ -120,37 +137,56 @@ void loop () {
 
 
   delay(random(50, 100));
-  float avg = (output1+output2)/2;
+  total1 = total1 - window1[readIndex];
+  total2 = total2 - window2[readIndex];
+  if(!isnan(output1)){
+    window1[readIndex] = output1;
+  }
+  if(!isnan(output2)){
+    window2[readIndex] = output2;
+  }
+  
+  total1 = total1 + window1[readIndex];
+  total2 = total2 + window2[readIndex];
 
-  // starttime = millis();
-  // endtime = starttime;
-  // while ((endtime - starttime) <= 1000) // do this loop for up to 700ms
-  // {
+  readIndex = readIndex + 1;
+  if(readIndex >= windowLength){
+    readIndex = 0;
+    windowFull = true;
+  }
+  average1 = total1/windowLength;
+  average2 = total2/windowLength;
+  Serial.print("Output 1 Average: ");
+  Serial.print(average1);
+  Serial.print(" Output 2 Average: ");
+  Serial.print(average2);
 
-  if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
-    if (avg > 0.5){ 
-      if (output1-output2 > 0.3){ 
-        delay(10);
-        turn_right();
-      }
-      else if (output2-output1 > 0.3){
-        delay(10);
-        turn_left();
+  float avg = (average1+average2)/2;
+
+  starttime = millis();
+  endtime = starttime;
+  while ((endtime - starttime) <= 1000) // do this loop for up to 700ms
+  {
+    if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
+      if (avg > 0.5){ 
+        if (output1-output2 > 0.05){ 
+          delay(10);
+          turn_right();
+        }
+        else if (output2-output1 > 0.05){
+          delay(10);
+          turn_left();
+        }
+        else{
+          delay(10);
+          forward(15+(avg*15));
+        }    
       }
       else{
-        delay(10);
-        forward(15+(avg*15));
-      }    
+        stop();
+      }
     }
-    else{
-      stop();
-    }
+    endtime = millis();
   }
 
-
-  //   endtime = millis();
-  // }
-
 }
-
-
