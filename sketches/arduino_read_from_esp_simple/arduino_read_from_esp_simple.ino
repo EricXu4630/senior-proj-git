@@ -49,21 +49,18 @@ void read_serial() {
 }
 
 void turn_left() {
-  roboclaw.ForwardM1(address, 30); 
+  roboclaw.ForwardM1(address, 35); 
   roboclaw.ForwardM2(address, 0); 
-  // roboclaw.TurnLeftMixed(address, 40); 
 }
 
 void turn_right() {
   roboclaw.ForwardM1(address, 0);
-  roboclaw.ForwardM2(address, 30); 
-  // roboclaw.TurnRightMixed(address, 40); 
+  roboclaw.ForwardM2(address, 35); 
 }
 
 void forward(float speed) {
   roboclaw.ForwardM1(address, speed);
   roboclaw.ForwardM2(address, speed); 
-  // roboclaw.ForwardMixed(address, speed); 
 }
 
 void stop() {
@@ -73,8 +70,7 @@ void stop() {
 
 void loop () {
   read_serial();
-
-  delay(random(50, 100));
+  delay(random(10, 20));
   float avg = (output1+output2)/2;
 
   if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
@@ -89,10 +85,11 @@ void loop () {
       }
       else{
         delay(10);
-        forward(15+(avg*25));
+        forward(20+(avg*30));
       }    
     }
     else{
+
       stop();
     }
   }
