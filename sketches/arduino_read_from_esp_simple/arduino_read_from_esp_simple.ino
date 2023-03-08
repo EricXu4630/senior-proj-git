@@ -75,11 +75,11 @@ void loop () {
 
   if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
     if (avg > 0.5){ 
-      if (output1-output2 > 0.3){ 
+      if (output1-output2 > 0.2){ 
         delay(10);
         turn_right();
       }
-      else if (output2-output1 > 0.3){
+      else if (output2-output1 > 0.2){
         delay(10);
         turn_left();
       }
