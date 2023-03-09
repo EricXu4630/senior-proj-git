@@ -50,11 +50,11 @@ void read_serial() {
 
 void turn_left() {
   roboclaw.ForwardM1(address, 35); 
-  roboclaw.ForwardM2(address, 0); 
+  roboclaw.ForwardM2(address, 15; 
 }
 
 void turn_right() {
-  roboclaw.ForwardM1(address, 0);
+  roboclaw.ForwardM1(address, 15);
   roboclaw.ForwardM2(address, 35); 
 }
 
@@ -70,21 +70,19 @@ void stop() {
 
 void loop () {
   read_serial();
+  
   delay(random(10, 20));
   float avg = (output1+output2)/2;
 
   if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
     if (avg > 0.5){ 
       if (output1-output2 > 0.2){ 
-        delay(10);
         turn_right();
       }
       else if (output2-output1 > 0.2){
-        delay(10);
         turn_left();
       }
       else{
-        delay(10);
         forward(20+(avg*30));
       }    
     }
