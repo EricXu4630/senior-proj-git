@@ -17,6 +17,7 @@ HCSR04 hc(2, new int[3]{5, 6, 7}, 3);
 float output1; 
 float output2; 
 float ultraSonicDist;
+bool obstacleDetected;
 
 struct Vec {
   float x; 
@@ -121,7 +122,7 @@ void loop () {
   //     return stop;
   //   }
   // }
-
+  obstacleDetected = false;
   for (int i = 0; i < 3; i++){
     ultraSonicDist = hc.dist(i);
     Serial.print(i);
@@ -129,6 +130,7 @@ void loop () {
     Serial.println(ultraSonicDist); //return curent distance (cm) in serial for sensor 1 to 3
     if(ultraSonicDist < 10){
       Serial.println("Obstacle Detected");
+      obstacleDetected = true;
     }
   }
   delay(random(50, 100));
@@ -138,7 +140,7 @@ void loop () {
   // endtime = starttime;
   // while ((endtime - starttime) <= 1000) // do this loop for up to 700ms
   // {
-
+  if(obstacleDetected == false){
   if (avg>=0 && avg<4.0 && !isnan(output1) && !isnan(output2)){
     if (avg > 0.5){ 
       if (output1-output2 > 0.3){ 
@@ -157,6 +159,7 @@ void loop () {
     else{
       stop();
     }
+  }
   }
 
 
