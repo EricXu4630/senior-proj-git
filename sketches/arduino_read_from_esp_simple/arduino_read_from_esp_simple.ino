@@ -1,7 +1,7 @@
 #include "RoboClaw.h"
 #include <SoftwareSerial.h>
 #include "SerialTransfer.h"
-
+#include <HCSR04.h>
 
 SoftwareSerial serial(10,11); 
 RoboClaw roboclaw(&serial, 10000); 
@@ -11,8 +11,12 @@ SerialTransfer anchor2_transfer;
 
 #define address 0x80
 
+//HCSR04 hc1(4,5);
+HCSR04 hc(2, new int[3]{5, 6, 7}, 3);
+
 float output1; 
 float output2; 
+float ultraSonicDist;
 
 struct Vec {
   float x; 
@@ -118,7 +122,15 @@ void loop () {
   //   }
   // }
 
-
+  for (int i = 0; i < 3; i++){
+    ultraSonicDist = hc.dist(i);
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(ultraSonicDist); //return curent distance (cm) in serial for sensor 1 to 3
+    if(ultraSonicDist < 10){
+      Serial.println("Obstacle Detected");
+    }
+  }
   delay(random(50, 100));
   float avg = (output1+output2)/2;
 
