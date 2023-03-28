@@ -128,7 +128,7 @@ void loop () {
     Serial.print(i);
     Serial.print(": ");
     Serial.println(ultraSonicDist); //return curent distance (cm) in serial for sensor 1 to 3
-    if(ultraSonicDist < 10){
+    if(ultraSonicDist < 15 && ultraSonicDist > 0){
       Serial.println("Obstacle Detected");
       obstacleDetected = true;
     }
