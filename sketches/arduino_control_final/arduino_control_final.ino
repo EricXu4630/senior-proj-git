@@ -74,9 +74,8 @@ void stop() {
 
 
 void makeBeep(){
-  tone(8, 500, 200);
-  delay(400);
-  noTone(8);
+  tone(8, 350, 125);
+  delay(250);
 }
 
 void stopBeep(){
@@ -90,9 +89,9 @@ void loop () {
   // read switch data
   int switchValue = analogRead(A0);
   // Serial.println(switchValue);
-  if (switchValue > 900)
+  if (switchValue > 1000)
   {
-    delay(10));  
+    delay(10);  
     float avg = (output1+output2)/2;
     if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2)){
       if (avg > 0.4){ 
@@ -103,7 +102,7 @@ void loop () {
           turn_left();
         }
         else{
-          forward(45);
+          forward(40);
         }    
       }
       else{
@@ -111,58 +110,58 @@ void loop () {
       }
     }
 
-    delay(60)); 
-    Serial.print("Sensor 0: ");
-    Serial.println(hc.dist(0)); 
-    Serial.print("Sensor 1: ");
-    Serial.println(hc.dist(1)); 
-    if (hc.dist(0)<5 && hc.dist(0)>1){
-      makeBeep();
-      stop();    
-      elapsedMillis timeElapsed;
-      unsigned int interval = 1000; 
-      while(timeElapsed < interval){
-          backward();
-      }
-      // if other side clear, turn for one second
-      if (hc.dist(1)>5){
-        elapsedMillis timeElapsed;
-        unsigned int interval = 750; 
-        while(timeElapsed < interval){
-            turn_left();
-        }
-      }	  
-    }    
-    else if (hc.dist(1)<5 && hc.dist(1)>0){
-      makeBeep();
-      stop();    
-      elapsedMillis timeElapsed;
-      unsigned int interval = 1000; 
-      while(timeElapsed < interval){
-          backward();
-      }
-      // if other side clear, turn for one second
-      if (hc.dist(0)>5){
-        elapsedMillis timeElapsed;
-        unsigned int interval = 750; 
-        while(timeElapsed < interval){
-            turn_right();
-        }
-      }	  
-    }
-    else{
-      stopBeep();
-    }
-
-
-    // delay(50); 
-    // Serial.println("sensor 0" + hc.dist(0)); 
-    // Serial.println("sensor 1" + hc.dist(1)); 
-    // if (hc.dist(0)<5 && hc.dist(0)>0){
-    //   stop();
+    // delay(60); 
+    // Serial.print("Sensor 0: ");
+    // Serial.println(hc.dist(0)); 
+    // Serial.print("Sensor 1: ");
+    // Serial.println(hc.dist(1)); 
+    // if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)<5 && hc.dist(1)>0){
     //   makeBeep();
+    //   stop();  
     // }
-    // else if (hc.dist(1)<5 && hc.dist(1)>0){
+    // else if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)>5){
+    //   makeBeep();
+    //   stop();    
+
+    //   elapsedMillis timeElapsed1;
+    //   unsigned int interval1 = 750; 
+    //   while(timeElapsed1 < interval1){
+    //       backward();
+    //   }
+     
+    //   elapsedMillis timeElapsed2;
+    //   unsigned int interval2 = 750; 
+    //   while(timeElapsed2 < interval2){
+    //       turn_left();
+    //   }      	  
+    // }    
+    // else if (hc.dist(1)<5 && hc.dist(1)>0 && hc.dist(0)>5){
+    //   makeBeep();
+    //   stop();    
+    
+    //   elapsedMillis timeElapsed1;
+    //   unsigned int interval1 = 750; 
+    //   while(timeElapsed1 < interval1){
+    //       backward();
+    //   }
+     
+    //   elapsedMillis timeElapsed2;
+    //   unsigned int interval2 = 750; 
+    //   while(timeElapsed2 < interval2){
+    //       turn_right();
+    //   }
+    // }
+    // else{
+    //   stopBeep();
+    // }
+
+
+    // delay(60); 
+    // Serial.print("Sensor 0: ");
+    // Serial.println(hc.dist(0)); 
+    // Serial.print("Sensor 1: ");
+    // Serial.println(hc.dist(1));  
+    // if (hc.dist(0)<2.0 && hc.dist(0)>0.1 && !isnan(hc.dist(0)) && !isnan(hc.dist(0))){
     //   stop();
     //   makeBeep();
     // }
