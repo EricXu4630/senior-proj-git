@@ -18,7 +18,7 @@ float output1;
 float output2; 
 float ultraSonicDist;
 bool blocked = false;
-
+bool blocked2 = false;
 void setup() {
   Serial.begin(115200); 
   Serial3.begin(115200);
@@ -152,7 +152,7 @@ void loop () {
     //   }
     // } 
 
-    if (hc.dist(0)<10.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
+    if (hc.dist(0)<30.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
       makeBeep();    
       blocked = true;
       stop();
@@ -164,21 +164,21 @@ void loop () {
     }
     
     delay(10);
-    if (hc.dist(1)<10.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
+    if (hc.dist(1)<30.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
       makeBeep();    
-      blocked = true;
+      blocked2 = true;
       stop();
       
     }
     else{
       stopBeep();
-      blocked = false;
+      blocked2 = false;
     }
 
     delay(100);  
     float avg = (output1+output2)/2;
     //&& (hc.dist(1)>10.0 || hc.dist(1)==0.0)  && (hc.dist(0)>10.0 || hc.dist(0)==0.0)
-    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked){
+    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2){
       if (avg > 0.4){ 
         if (output1-output2 > 0.3){ 
           turn_right();
