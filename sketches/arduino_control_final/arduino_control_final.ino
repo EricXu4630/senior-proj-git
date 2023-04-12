@@ -74,6 +74,36 @@ void stop() {
   roboclaw.ForwardM2(address, 0); 
 }
 
+void rightBlocked(){
+  stop();    
+  elapsedMillis timeElapsed1;
+  unsigned int interval1 = 1000; 
+  while(timeElapsed1 < interval1){
+      backward();
+  }
+  
+  // elapsedMillis timeElapsed2;
+  // unsigned int interval2 = 750; 
+  // while(timeElapsed2 < interval2){
+  //     turn_left();
+  // }  
+}
+
+void leftBlocked(){
+  stop();    
+  elapsedMillis timeElapsed1;
+  unsigned int interval1 = 1000; 
+  while(timeElapsed1 < interval1){
+      backward();
+  }
+  
+  // elapsedMillis timeElapsed2;
+  // unsigned int interval2 = 750; 
+  // while(timeElapsed2 < interval2){
+  //     turn_right();
+  // }  
+}
+
 
 void makeBeep(){
   tone(8, 350, 125);
@@ -93,60 +123,17 @@ void loop () {
   // Serial.println(switchValue);
   if (switchValue > 1000)
   {
-    // delay(60); 
     // Serial.print("Sensor 0: ");
     // Serial.println(hc.dist(0)); 
     // Serial.print("Sensor 1: ");
     // Serial.println(hc.dist(1));
 
-
-    // if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)<5 && hc.dist(1)>0){
-    //   makeBeep();
-    //   stop();  
-    // }
-    // else if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)>5){
-    //   makeBeep();
-    //   stop();    
-
-    //   elapsedMillis timeElapsed1;
-    //   unsigned int interval1 = 500; 
-    //   while(timeElapsed1 < interval1){
-    //       backward();
-    //   }
-     
-    //   elapsedMillis timeElapsed2;
-    //   unsigned int interval2 = 500; 
-    //   while(timeElapsed2 < interval2){
-    //       turn_left();
-    //   }      	  
-    // }    
-    // else if (hc.dist(1)<5 && hc.dist(1)>0 && hc.dist(0)>5){
-    //   makeBeep();
-    //   stop();    
-    
-    //   elapsedMillis timeElapsed1;
-    //   unsigned int interval1 = 750; 
-    //   while(timeElapsed1 < interval1){
-    //       backward();
-    //   }
-     
-    //   elapsedMillis timeElapsed2;
-    //   unsigned int interval2 = 750; 
-    //   while(timeElapsed2 < interval2){
-    //       turn_right();
-    //   }
-    // }
-    // else{
-    //   stopBeep();
-    // }
-
-
-    delay(60); 
+    delay(10); 
     if (hc.dist(0)<30.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
       makeBeep();  
       blocked = true;  
-      stop();
-      
+      // stop();
+      rightBlocked();      
     }
     else{
       stopBeep();
@@ -157,8 +144,8 @@ void loop () {
     if (hc.dist(1)<30.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
       makeBeep();  
       blocked2 = true;  
-      stop();
-      
+      // stop();
+      leftBlocked();      
     }
     else{
       stopBeep();
@@ -183,53 +170,6 @@ void loop () {
         stop();
       }
     }
-
-    // delay(60); 
-    // Serial.print("Sensor 0: ");
-    // Serial.println(hc.dist(0)); 
-    // Serial.print("Sensor 1: ");
-    // Serial.println(hc.dist(1)); 
-    // if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)<5 && hc.dist(1)>0){
-    //   makeBeep();
-    //   stop();  
-    // }
-    // else if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)>5){
-    //   makeBeep();
-    //   stop();    
-
-    //   elapsedMillis timeElapsed1;
-    //   unsigned int interval1 = 750; 
-    //   while(timeElapsed1 < interval1){
-    //       backward();
-    //   }
-     
-    //   elapsedMillis timeElapsed2;
-    //   unsigned int interval2 = 750; 
-    //   while(timeElapsed2 < interval2){
-    //       turn_left();
-    //   }      	  
-    // }    
-    // else if (hc.dist(1)<5 && hc.dist(1)>0 && hc.dist(0)>5){
-    //   makeBeep();
-    //   stop();    
-    
-    //   elapsedMillis timeElapsed1;
-    //   unsigned int interval1 = 750; 
-    //   while(timeElapsed1 < interval1){
-    //       backward();
-    //   }
-     
-    //   elapsedMillis timeElapsed2;
-    //   unsigned int interval2 = 750; 
-    //   while(timeElapsed2 < interval2){
-    //       turn_right();
-    //   }
-    // }
-    // else{
-    //   stopBeep();
-    // }
-
-
   }
   else{
     stop();
