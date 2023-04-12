@@ -17,6 +17,8 @@ HCSR04 hc(5, new int[2]{2,4}, 2);
 float output1; 
 float output2; 
 float ultraSonicDist;
+bool blocked = false;
+bool blocked2 = false;
 
 void setup() {
   Serial.begin(115200); 
@@ -92,10 +94,12 @@ void loop () {
   if (switchValue > 1000)
   {
     // delay(60); 
-    Serial.print("Sensor 0: ");
-    Serial.println(hc.dist(0)); 
+    // Serial.print("Sensor 0: ");
+    // Serial.println(hc.dist(0)); 
     // Serial.print("Sensor 1: ");
-    // Serial.println(hc.dist(1)); 
+    // Serial.println(hc.dist(1));
+
+
     // if (hc.dist(0)<5 && hc.dist(0)>0 && hc.dist(1)<5 && hc.dist(1)>0){
     //   makeBeep();
     //   stop();  
@@ -138,41 +142,32 @@ void loop () {
 
 
     delay(60); 
-    // Serial.print("Sensor 0: ");
-    // Serial.println(hc.dist(0)); 
-    // Serial.print("Sensor 1: ");
-    // Serial.println(hc.dist(1));  
-    // if (hc.dist(0)>0 && !isnan(hc.dist(0)) && hc.dist(1)>0 && !isnan(hc.dist(1))){
-    //   if (hc.dist(0)<5.0){
-    //     makeBeep();
-    //   }  
-    //   else{
-    //     stopBeep();
-    //   }
-    // } 
-
-    if (hc.dist(0)<10.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
-      makeBeep();    
+    if (hc.dist(0)<30.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
+      makeBeep();  
+      blocked = true;  
       stop();
       
     }
     else{
       stopBeep();
+      blocked = false;
     }
     
     delay(10);
-    if (hc.dist(1)<10.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
-      makeBeep();    
+    if (hc.dist(1)<30.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
+      makeBeep();  
+      blocked2 = true;  
       stop();
       
     }
     else{
       stopBeep();
+      blocked2 = false;
     }
 
-    delay(100);  
+    delay(20);  
     float avg = (output1+output2)/2;
-    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && (hc.dist(1)>10.0 || hc.dist(1)==0.0)  && (hc.dist(0)>10.0 || hc.dist(0)==0.0)){
+    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2){
       if (avg > 0.4){ 
         if (output1-output2 > 0.3){ 
           turn_right();
@@ -233,20 +228,6 @@ void loop () {
     // else{
     //   stopBeep();
     // }
-
-
-    // delay(60); 
-    // Serial.print("Sensor 0: ");
-    // Serial.println(hc.dist(0)); 
-    // // Serial.print("Sensor 1: ");
-    // // Serial.println(hc.dist(1));  
-    // if (hc.dist(1)<2.0 && hc.dist(1)>0.1 && !isnan(hc.dist(1)) ){
-    //   stop();
-    //   makeBeep();
-    // }
-    // else{
-    //   stopBeep();
-    // }  
 
 
   }
