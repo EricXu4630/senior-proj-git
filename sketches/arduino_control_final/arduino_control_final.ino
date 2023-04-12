@@ -10,7 +10,7 @@ RoboClaw roboclaw(&serial, 10000);
 SerialTransfer anchor1_transfer;
 SerialTransfer anchor2_transfer;
 
-HCSR04 hc(5, new int[2]{2,4}, 2);
+HCSR04 hc(5, new int[3]{2,3,4}, 3);
 
 #define address 0x80
 
@@ -19,6 +19,7 @@ float output2;
 float ultraSonicDist;
 bool blocked = false;
 bool blocked2 = false;
+bool blocked3 = false;
 void setup() {
   Serial.begin(115200); 
   Serial3.begin(115200);
@@ -152,7 +153,7 @@ void loop () {
     //   }
     // } 
 
-    if (hc.dist(0)<30.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
+    if (hc.dist(0)<50.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
       makeBeep();    
       blocked = true;
       stop();
@@ -164,7 +165,7 @@ void loop () {
     }
     
     delay(10);
-    if (hc.dist(1)<30.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
+    if (hc.dist(1)<50.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
       makeBeep();    
       blocked2 = true;
       stop();
@@ -175,10 +176,22 @@ void loop () {
       blocked2 = false;
     }
 
+    delay(10);
+    if (hc.dist(2)<50.0 && hc.dist(2)>0 && !isnan(hc.dist(2))){
+      makeBeep();    
+      blocked3 = true;
+      stop();
+      
+    }
+    else{
+      stopBeep();
+      blocked3 = false;
+    }
+
     delay(100);  
     float avg = (output1+output2)/2;
     //&& (hc.dist(1)>10.0 || hc.dist(1)==0.0)  && (hc.dist(0)>10.0 || hc.dist(0)==0.0)
-    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2){
+    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2 && !blocked3){
       if (avg > 0.4){ 
         if (output1-output2 > 0.3){ 
           turn_right();
