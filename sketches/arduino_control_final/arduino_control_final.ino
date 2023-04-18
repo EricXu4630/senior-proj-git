@@ -54,12 +54,12 @@ void read_serial() {
 }
 
 void turn_left() {
-  roboclaw.ForwardM1(address, 30); 
-  roboclaw.BackwardM2(address, 5); 
+  roboclaw.ForwardM1(address, 43); 
+  roboclaw.ForwardM2(address, 10); 
 }
 void turn_right() {
-  roboclaw.BackwardM1(address, 5);
-  roboclaw.ForwardM2(address, 30); 
+  roboclaw.ForwardM1(address, 10);
+  roboclaw.ForwardM2(address, 43); 
 }
 void forward(float speed) {
   roboclaw.ForwardM1(address, speed);
@@ -73,11 +73,11 @@ void stop() {
   roboclaw.ForwardM1(address, 0);
   roboclaw.ForwardM2(address, 0); 
 }
-
+/*
 void rightBlocked(){
   stop();    
   elapsedMillis timeElapsed1;
-  unsigned int interval1 = 1000; 
+  unsigned int interval1 = 300; 
   while(timeElapsed1 < interval1){
       backward();
   }
@@ -92,7 +92,7 @@ void rightBlocked(){
 void leftBlocked(){
   stop();    
   elapsedMillis timeElapsed1;
-  unsigned int interval1 = 1000; 
+  unsigned int interval1 = 300; 
   while(timeElapsed1 < interval1){
       backward();
   }
@@ -103,7 +103,7 @@ void leftBlocked(){
   //     turn_right();
   // }  
 }
-
+*/
 
 void makeBeep(){
   tone(8, 350, 125);
@@ -123,17 +123,17 @@ void loop () {
   // Serial.println(switchValue);
   if (switchValue > 1000)
   {
-    // Serial.print("Sensor 0: ");
-    // Serial.println(hc.dist(0)); 
-    // Serial.print("Sensor 1: ");
-    // Serial.println(hc.dist(1));
+    Serial.print("Sensor 0: ");
+    Serial.println(hc.dist(0)); 
+    Serial.print("Sensor 1: ");
+    Serial.println(hc.dist(1));
 
-    delay(10); 
-    if (hc.dist(0)<30.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
+    delay(60); 
+    if (hc.dist(0)<5.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
       makeBeep();  
       blocked = true;  
-      // stop();
-      rightBlocked();      
+      stop();
+      // rightBlocked();      
     }
     else{
       stopBeep();
@@ -141,18 +141,18 @@ void loop () {
     }
     
     delay(10);
-    if (hc.dist(1)<30.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
+    if (hc.dist(1)<5.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
       makeBeep();  
       blocked2 = true;  
-      // stop();
-      leftBlocked();      
+      stop();
+      // leftBlocked();      
     }
     else{
       stopBeep();
       blocked2 = false;
     }
 
-    delay(20);  
+    delay(100);  
     float avg = (output1+output2)/2;
     if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2){
       if (avg > 0.4){ 
@@ -163,7 +163,7 @@ void loop () {
           turn_left();
         }
         else{
-          forward(40);
+          forward(38);
         }    
       }
       else{
