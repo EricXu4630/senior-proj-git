@@ -1,8 +1,6 @@
 #include "RoboClaw.h"
 #include <SoftwareSerial.h>
 #include "SerialTransfer.h"
-#include <elapsedMillis.h>
-#include <HCSR04.h>
 
 SoftwareSerial serial(10,11); 
 RoboClaw roboclaw(&serial, 10000); 
@@ -10,15 +8,11 @@ RoboClaw roboclaw(&serial, 10000);
 SerialTransfer anchor1_transfer;
 SerialTransfer anchor2_transfer;
 
-HCSR04 hc(5, new int[2]{2,4}, 2);
 
 #define address 0x80
 
 float output1; 
 float output2; 
-float ultraSonicDist;
-bool blocked = false;
-bool blocked2 = false;
 
 void setup() {
   Serial.begin(115200); 
@@ -75,15 +69,6 @@ void stop() {
 }
 
 
-void makeBeep(){
-  tone(8, 350, 50);
-  delay(100);
-}
-
-void stopBeep(){
-  noTone(8);
-}
-
 
 void loop () {
   read_serial();
@@ -93,36 +78,9 @@ void loop () {
   // Serial.println(switchValue);
   if (switchValue > 1000)
   {
-    // Serial.print("Sensor 0: ");
-    // Serial.println(hc.dist(0)); 
-    // Serial.print("Sensor 1: ");
-    // Serial.println(hc.dist(1));
-
-    delay(10); 
-    if (hc.dist(0)<5.0 && hc.dist(0)>0 && !isnan(hc.dist(0))){
-      makeBeep();  
-      blocked = true;  
-      stop();     
-    }
-    else{
-      stopBeep();
-      blocked = false;
-    }
-    
-    delay(10);
-    if (hc.dist(1)<5.0 && hc.dist(1)>0 && !isnan(hc.dist(1))){
-      makeBeep();  
-      blocked2 = true;  
-      stop();   
-    }
-    else{
-      stopBeep();
-      blocked2 = false;
-    }
-
-    delay(60);  
+    delay(50);  
     float avg = (output1+output2)/2;
-    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2){
+    if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2)){
       if (avg > 0.4){ 
         if (output1-output2 > 0.3){ 
           turn_right();
