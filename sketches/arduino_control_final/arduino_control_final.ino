@@ -1,7 +1,6 @@
 #include "RoboClaw.h"
 #include <SoftwareSerial.h>
 #include "SerialTransfer.h"
-#include <elapsedMillis.h>
 #include <HCSR04.h>
 
 SoftwareSerial serial(10,11); 
@@ -54,20 +53,16 @@ void read_serial() {
 }
 
 void turn_left() {
-  roboclaw.ForwardM1(address, 40); 
-  roboclaw.ForwardM2(address, 5); 
+  roboclaw.ForwardM1(address, 35); 
+  roboclaw.ForwardM2(address, 0); 
 }
 void turn_right() {
-  roboclaw.ForwardM1(address, 5);
-  roboclaw.ForwardM2(address, 40); 
+  roboclaw.ForwardM1(address, 0);
+  roboclaw.ForwardM2(address, 35); 
 }
 void forward(float speed) {
   roboclaw.ForwardM1(address, speed);
   roboclaw.ForwardM2(address, speed); 
-}
-void backward() {
-  roboclaw.BackwardM1(address, 25);
-  roboclaw.BackwardM2(address, 25);
 }
 void stop() {
   roboclaw.ForwardM1(address, 0);
@@ -90,7 +85,6 @@ void loop () {
 
   // read switch data
   int switchValue = analogRead(A0);
-  // Serial.println(switchValue);
   if (switchValue > 1000)
   {
     // Serial.print("Sensor 0: ");
@@ -120,18 +114,21 @@ void loop () {
       blocked2 = false;
     }
 
-    delay(60);  
+    delay(50);  
     float avg = (output1+output2)/2;
     if (output1>0 && output2>0 && avg<5.0 && !isnan(output1) && !isnan(output2) && !blocked && !blocked2){
-      if (avg > 0.4){ 
-        if (output1-output2 > 0.3){ 
+      if (avg > 0.45){ 
+        if (output1-output2 > 0.3){
+          delay(10);
           turn_right();
         }
         else if (output2-output1 > 0.3){
+          delay(10);
           turn_left();
         }
         else{
-          forward(40);
+          delay(10);
+          forward(55);
         }    
       }
       else{
