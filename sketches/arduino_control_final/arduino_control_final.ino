@@ -53,12 +53,12 @@ void read_serial() {
 }
 
 void turn_left() {
-  roboclaw.ForwardM1(address, 35); 
+  roboclaw.ForwardM1(address, 38); 
   roboclaw.ForwardM2(address, 0); 
 }
 void turn_right() {
   roboclaw.ForwardM1(address, 0);
-  roboclaw.ForwardM2(address, 35); 
+  roboclaw.ForwardM2(address, 38); 
 }
 void forward(float speed) {
   roboclaw.ForwardM1(address, speed);
